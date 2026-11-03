@@ -38,7 +38,7 @@ function Shell() {
         <header className="border-b bg-card">
           <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-4 px-6 py-3">
             <Link to="/board" className="font-display text-2xl font-semibold">
-              Shortlist<span className="text-accent">.</span>
+              TalentFlow<span className="text-accent">.</span>
             </Link>
             <nav className="flex gap-1 text-sm">
               <NavLink to="/board">Board</NavLink>

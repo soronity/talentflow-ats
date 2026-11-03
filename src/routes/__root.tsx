@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Shortlist — mini ATS" },
+      { title: "TalentFlow — mini ATS" },
       { name: "description", content: "A simple applicant tracking system for recruiting customers." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

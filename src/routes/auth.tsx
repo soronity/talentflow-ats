@@ -13,10 +13,10 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in — Shortlist" },
-      { name: "description", content: "Sign in to your Shortlist applicant tracking account." },
-      { property: "og:title", content: "Sign in — Shortlist" },
-      { property: "og:description", content: "Sign in to your Shortlist applicant tracking account." },
+      { title: "Sign in — TalentFlow" },
+      { name: "description", content: "Sign in to your TalentFlow applicant tracking account." },
+      { property: "og:title", content: "Sign in — TalentFlow" },
+      { property: "og:description", content: "Sign in to your TalentFlow applicant tracking account." },
     ],
   }),
   component: AuthPage,
@@ -64,7 +64,7 @@ function AuthPage() {
     <div className="grid min-h-screen md:grid-cols-2">
       <div className="hidden flex-col justify-between bg-primary p-12 text-primary-foreground md:flex">
         <div className="font-display text-3xl font-semibold">
-          Shortlist<span className="text-accent">.</span>
+          TalentFlow<span className="text-accent">.</span>
         </div>
         <div>
           <p className="font-display text-5xl leading-tight">
