@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      bootstrap_lock: {
+        Row: {
+          claimed_at: string
+          id: number
+        }
+        Insert: {
+          claimed_at?: string
+          id: number
+        }
+        Update: {
+          claimed_at?: string
+          id?: number
+        }
+        Relationships: []
+      }
       candidates: {
         Row: {
           ai_evaluated_at: string | null

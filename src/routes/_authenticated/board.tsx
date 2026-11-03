@@ -15,6 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { evaluateCandidate } from "@/lib/ats.functions";
+import { aiResetFields } from "@/lib/candidate-save";
 import { STAGES, filterCandidates, isStage, type Stage } from "@/lib/stages";
 import { NeedCustomer, useWorkspace } from "@/lib/workspace";
 import { useJobs } from "@/hooks/use-jobs";
@@ -178,7 +179,7 @@ function Card({ c, jobTitle, onOpen }: { c: Candidate; jobTitle: string; onOpen:
   );
 }
 
-function CandidateDialog({
+export function CandidateDialog({
   candidate,
   defaultJob,
   jobs,
@@ -205,6 +206,12 @@ function CandidateDialog({
   });
   const [ai, setAi] = useState({ score: candidate?.ai_score ?? null, summary: candidate?.ai_summary ?? null });
   const [busy, setBusy] = useState(false);
+  // Once a new candidate is inserted, every later save updates that same row (prevents duplicates).
+  const [savedId, setSavedId] = useState<string | null>(candidate?.id ?? null);
+  // CV + job the current AI score was computed for.
+  const [scoredFor, setScoredFor] = useState<{ cv_text: string | null; job_id: string } | null>(
+    candidate ? { cv_text: candidate.cv_text, job_id: candidate.job_id } : null,
+  );
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setF({ ...f, [k]: e.target.value });
 
@@ -213,11 +220,14 @@ function CandidateDialog({
       toast.error("Name and job are required");
       return null;
     }
-    if (candidate) {
-      const { error } = await supabase.from("candidates").update(f).eq("id", candidate.id);
+    if (savedId) {
+      const reset = aiResetFields(scoredFor, f);
+      const { error } = await supabase.from("candidates").update({ ...f, ...reset }).eq("id", savedId);
       if (error) return toast.error(error.message), null;
+      if ("ai_score" in reset) setAi({ score: null, summary: null });
+      setScoredFor({ cv_text: f.cv_text, job_id: f.job_id });
       onSaved();
-      return candidate.id;
+      return savedId;
     }
     const { data, error } = await supabase
       .from("candidates")
@@ -225,6 +235,8 @@ function CandidateDialog({
       .select("id")
       .single();
     if (error) return toast.error(error.message), null;
+    setSavedId(data.id);
+    setScoredFor({ cv_text: f.cv_text, job_id: f.job_id });
     onSaved();
     return data.id;
   }
