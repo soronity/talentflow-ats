@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { clampScore } from "@/lib/stages";
+import { bootstrapAdminUsing, createUserWithRoleUsing } from "@/lib/accounts.logic";
 
 const accountSchema = z.object({
   email: z.string().email(),
@@ -13,18 +14,7 @@ const accountSchema = z.object({
 
 async function createUserWithRole(input: z.infer<typeof accountSchema>) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data, error } = await supabaseAdmin.auth.admin.createUser({
-    email: input.email,
-    password: input.password,
-    email_confirm: true,
-    user_metadata: { full_name: input.full_name, company_name: input.company_name },
-  });
-  if (error || !data.user) throw new Error(error?.message ?? "Could not create user");
-  const { error: roleErr } = await supabaseAdmin
-    .from("user_roles")
-    .insert({ user_id: data.user.id, role: input.role });
-  if (roleErr) throw new Error(roleErr.message);
-  return { id: data.user.id };
+  return createUserWithRoleUsing(supabaseAdmin as never, input);
 }
 
 /** Admin-only: create an admin or customer account. */
@@ -45,12 +35,7 @@ export const bootstrapAdmin = createServerFn({ method: "POST" })
   .validator((input: unknown) => accountSchema.omit({ role: true }).parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { count } = await supabaseAdmin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-    if ((count ?? 0) > 0) throw new Error("An admin already exists");
-    return createUserWithRole({ ...data, role: "admin" });
+    return bootstrapAdminUsing(supabaseAdmin as never, data);
   });
 
 /** AI assessment of a candidate's CV against the job description. */
