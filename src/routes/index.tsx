@@ -7,9 +7,9 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Shortlist — mini ATS" },
+      { title: "TalentFlow — mini ATS" },
       { name: "description", content: "Track candidates for your open jobs on a simple kanban board." },
-      { property: "og:title", content: "Shortlist — mini ATS" },
+      { property: "og:title", content: "TalentFlow — mini ATS" },
       { property: "og:description", content: "Track candidates for your open jobs on a simple kanban board." },
     ],
   }),

@@ -32,9 +32,9 @@ export const Route = createFileRoute("/_authenticated/board")({
     typeof s["job"] === "string" ? { job: s["job"] } : {},
   head: () => ({
     meta: [
-      { title: "Pipeline — Shortlist" },
+      { title: "Pipeline — TalentFlow" },
       { name: "description", content: "Kanban board of candidates across your hiring stages." },
-      { property: "og:title", content: "Pipeline — Shortlist" },
+      { property: "og:title", content: "Pipeline — TalentFlow" },
       { property: "og:description", content: "Kanban board of candidates across your hiring stages." },
     ],
   }),

@@ -15,9 +15,9 @@ import { Badge } from "@/components/ui/badge";
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
-      { title: "Accounts — Shortlist" },
+      { title: "Accounts — TalentFlow" },
       { name: "description", content: "Create and manage admin and customer accounts." },
-      { property: "og:title", content: "Accounts — Shortlist" },
+      { property: "og:title", content: "Accounts — TalentFlow" },
       { property: "og:description", content: "Create and manage admin and customer accounts." },
     ],
   }),

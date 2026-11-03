@@ -13,9 +13,9 @@ import { Textarea } from "@/components/ui/textarea";
 export const Route = createFileRoute("/_authenticated/jobs")({
   head: () => ({
     meta: [
-      { title: "Jobs — Shortlist" },
+      { title: "Jobs — TalentFlow" },
       { name: "description", content: "Post the jobs you are recruiting for." },
-      { property: "og:title", content: "Jobs — Shortlist" },
+      { property: "og:title", content: "Jobs — TalentFlow" },
       { property: "og:description", content: "Post the jobs you are recruiting for." },
     ],
   }),
