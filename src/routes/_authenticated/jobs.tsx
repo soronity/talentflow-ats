@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { NeedCustomer, useWorkspace } from "./route";
+import { useJobs } from "@/hooks/use-jobs";
+import { NeedCustomer, useWorkspace } from "@/lib/workspace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,22 +21,6 @@ export const Route = createFileRoute("/_authenticated/jobs")({
   }),
   component: JobsPage,
 });
-
-export function useJobs(customerId: string | null) {
-  return useQuery({
-    queryKey: ["jobs", customerId],
-    enabled: !!customerId,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("jobs")
-        .select("*, candidates(count)")
-        .eq("customer_id", customerId!)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
-}
 
 function JobsPage() {
   const { customerId } = useWorkspace();
