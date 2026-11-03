@@ -13,3 +13,4 @@
 - Roles live in `public.user_roles` and are checked with `has_role()` in RLS; never store roles on profiles (prevents privilege escalation).
 - Every job/candidate row carries `customer_id`; RLS lets the owner or any admin access it, which is how admins "act as" a customer.
 - Account creation, first-admin bootstrap and AI CV assessment run in server functions (`src/lib/ats.functions.ts`); public sign-up is disabled so only admins create accounts.
+- First-admin bootstrap claims a single-row `public.bootstrap_lock` before creating the user, so concurrent bootstrap calls can't both succeed; account logic lives in `src/lib/accounts.logic.ts` with an injected client for unit tests.
