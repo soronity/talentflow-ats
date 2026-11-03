@@ -14,16 +14,172 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      candidates: {
+        Row: {
+          ai_evaluated_at: string | null
+          ai_score: number | null
+          ai_summary: string | null
+          created_at: string
+          customer_id: string
+          cv_text: string | null
+          email: string | null
+          full_name: string
+          id: string
+          job_id: string
+          linkedin_url: string | null
+          notes: string | null
+          phone: string | null
+          stage: Database["public"]["Enums"]["candidate_stage"]
+        }
+        Insert: {
+          ai_evaluated_at?: string | null
+          ai_score?: number | null
+          ai_summary?: string | null
+          created_at?: string
+          customer_id: string
+          cv_text?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          job_id: string
+          linkedin_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          stage?: Database["public"]["Enums"]["candidate_stage"]
+        }
+        Update: {
+          ai_evaluated_at?: string | null
+          ai_score?: number | null
+          ai_summary?: string | null
+          created_at?: string
+          customer_id?: string
+          cv_text?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          job_id?: string
+          linkedin_url?: string | null
+          notes?: string | null
+          phone?: string | null
+          stage?: Database["public"]["Enums"]["candidate_stage"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidates_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidates_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          created_at: string
+          customer_id: string
+          description: string
+          id: string
+          location: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          description?: string
+          id?: string
+          location?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          description?: string
+          id?: string
+          location?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      admin_exists: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "customer"
+      candidate_stage:
+        | "applied"
+        | "screening"
+        | "interview"
+        | "offer"
+        | "hired"
+        | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +306,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "customer"],
+      candidate_stage: [
+        "applied",
+        "screening",
+        "interview",
+        "offer",
+        "hired",
+        "rejected",
+      ],
+    },
   },
 } as const
