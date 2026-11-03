@@ -36,11 +36,13 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const setup = hasAdmin === false;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
+    setError(null);
     try {
       if (setup) {
         await bootstrap({ data: { email, password, full_name: name, company_name: "" } });
@@ -50,7 +52,9 @@ function AuthPage() {
       if (error) throw error;
       navigate({ to: "/board" });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Sign-in failed");
+      const msg = err instanceof Error ? err.message : "Sign-in failed";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setBusy(false);
     }
@@ -103,6 +107,7 @@ function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
           <Button type="submit" className="w-full" disabled={busy}>
             {busy ? "Please wait…" : setup ? "Create admin & sign in" : "Sign in"}
           </Button>
