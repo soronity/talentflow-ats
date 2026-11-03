@@ -15,6 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { evaluateCandidate } from "@/lib/ats.functions";
+import { aiResetFields } from "@/lib/candidate-save";
 import { STAGES, filterCandidates, isStage, type Stage } from "@/lib/stages";
 import { NeedCustomer, useWorkspace } from "@/lib/workspace";
 import { useJobs } from "@/hooks/use-jobs";
@@ -178,7 +179,7 @@ function Card({ c, jobTitle, onOpen }: { c: Candidate; jobTitle: string; onOpen:
   );
 }
 
-function CandidateDialog({
+export function CandidateDialog({
   candidate,
   defaultJob,
   jobs,
