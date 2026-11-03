@@ -30,7 +30,7 @@ async function createUserWithRole(input: z.infer<typeof accountSchema>) {
 /** Admin-only: create an admin or customer account. */
 export const createAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => accountSchema.parse(input))
+  .validator((input: unknown) => accountSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", {
       _user_id: context.userId,
@@ -42,7 +42,7 @@ export const createAccount = createServerFn({ method: "POST" })
 
 /** Public, one-time: creates the very first admin. Refuses once any admin exists. */
 export const bootstrapAdmin = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => accountSchema.omit({ role: true }).parse(input))
+  .validator((input: unknown) => accountSchema.omit({ role: true }).parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { count } = await supabaseAdmin
@@ -56,7 +56,7 @@ export const bootstrapAdmin = createServerFn({ method: "POST" })
 /** AI assessment of a candidate's CV against the job description. */
 export const evaluateCandidate = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ candidateId: z.string().uuid() }).parse(input))
+  .validator((input: unknown) => z.object({ candidateId: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { supabase } = context;
     const { data: cand, error } = await supabase
