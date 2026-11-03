@@ -37,7 +37,7 @@ beforeEach(() => {
 function fillNew() {
   render(<CandidateDialog candidate={null} {...props} />);
   const inputs = screen.getAllByRole("textbox");
-  fireEvent.change(inputs[0], { target: { value: "Ada" } }); // full name
+  fireEvent.change(inputs[0]!, { target: { value: "Ada" } }); // full name
   fireEvent.change(screen.getByPlaceholderText("Paste the CV content here"), { target: { value: "CV" } });
 }
 
