@@ -29,7 +29,7 @@ type Candidate = Tables<"candidates">;
 
 export const Route = createFileRoute("/_authenticated/board")({
   validateSearch: (s: Record<string, unknown>): { job?: string } =>
-    typeof s.job === "string" ? { job: s.job } : {},
+    typeof s["job"] === "string" ? { job: s["job"] } : {},
   head: () => ({
     meta: [
       { title: "Pipeline — Shortlist" },

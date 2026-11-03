@@ -48,7 +48,10 @@ function JobsPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.from("jobs").insert({ ...form, customer_id: customerId! });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Job posted");
     setForm({ title: "", location: "", description: "" });
     qc.invalidateQueries({ queryKey: ["jobs", customerId] });
@@ -57,7 +60,10 @@ function JobsPage() {
   async function remove(id: string) {
     if (!confirm("Delete this job and all its candidates?")) return;
     const { error } = await supabase.from("jobs").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     qc.invalidateQueries({ queryKey: ["jobs", customerId] });
     qc.invalidateQueries({ queryKey: ["candidates", customerId] });
   }
