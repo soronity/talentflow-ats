@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { WorkspaceCtx } from "@/lib/workspace";
 import { supabase } from "@/integrations/supabase/client";
 import { useCustomers, useMe } from "@/hooks/use-me";
 import { Button } from "@/components/ui/button";
@@ -14,10 +15,6 @@ export const Route = createFileRoute("/_authenticated")({
   component: Shell,
 });
 
-type Workspace = { customerId: string | null; isAdmin: boolean };
-const WorkspaceCtx = createContext<Workspace>({ customerId: null, isAdmin: false });
-/** The customer whose data is being viewed: yourself as a customer, or the picked customer as admin. */
-export const useWorkspace = () => useContext(WorkspaceCtx);
 
 function Shell() {
   const { data: me, isLoading } = useMe();
@@ -102,19 +99,5 @@ function NavLink({ to, children }: { to: "/board" | "/jobs" | "/admin"; children
     >
       {children}
     </Link>
-  );
-}
-
-export function NeedCustomer() {
-  return (
-    <div className="rounded-md border border-dashed p-10 text-center text-muted-foreground">
-      Pick a customer in the top-right menu to work on their jobs and candidates.
-      <div className="mt-2 text-sm">
-        No customers yet?{" "}
-        <Link to="/admin" className="text-accent underline">
-          Create one
-        </Link>
-      </div>
-    </div>
   );
 }

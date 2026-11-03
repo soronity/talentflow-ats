@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { NeedCustomer, useWorkspace } from "./route";
+import { useJobs } from "@/hooks/use-jobs";
+import { NeedCustomer, useWorkspace } from "@/lib/workspace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,22 +22,6 @@ export const Route = createFileRoute("/_authenticated/jobs")({
   component: JobsPage,
 });
 
-export function useJobs(customerId: string | null) {
-  return useQuery({
-    queryKey: ["jobs", customerId],
-    enabled: !!customerId,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("jobs")
-        .select("*, candidates(count)")
-        .eq("customer_id", customerId!)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
-}
-
 function JobsPage() {
   const { customerId } = useWorkspace();
   const qc = useQueryClient();
@@ -48,7 +33,10 @@ function JobsPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const { error } = await supabase.from("jobs").insert({ ...form, customer_id: customerId! });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Job posted");
     setForm({ title: "", location: "", description: "" });
     qc.invalidateQueries({ queryKey: ["jobs", customerId] });
@@ -57,7 +45,10 @@ function JobsPage() {
   async function remove(id: string) {
     if (!confirm("Delete this job and all its candidates?")) return;
     const { error } = await supabase.from("jobs").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     qc.invalidateQueries({ queryKey: ["jobs", customerId] });
     qc.invalidateQueries({ queryKey: ["candidates", customerId] });
   }
