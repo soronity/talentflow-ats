@@ -38,6 +38,21 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setup = hasAdmin === false;
+  const [resetSent, setResetSent] = useState(false);
+
+  async function forgot() {
+    if (!email) {
+      setError("Enter your email above first.");
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    setResetSent(true);
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -107,6 +122,16 @@ function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          {!setup && (
+            <button type="button" onClick={forgot} disabled={busy} className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
+              Forgot password?
+            </button>
+          )}
+          {resetSent && (
+            <p className="text-sm text-muted-foreground" role="status">
+              If an account exists for that email, a reset link is on its way. Check your spam folder too.
+            </p>
+          )}
           {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
           <Button type="submit" className="w-full" disabled={busy}>
             {busy ? "Please wait…" : setup ? "Create admin & sign in" : "Sign in"}
