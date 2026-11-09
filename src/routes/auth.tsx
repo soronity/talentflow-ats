@@ -41,15 +41,17 @@ function AuthPage() {
   const [resetSent, setResetSent] = useState(false);
 
   async function forgot() {
-    if (!email) {
-      setError("Enter your email above first.");
+    const addr = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr) || addr.length > 255) {
+      setError("Enter a valid email address above first.");
       return;
     }
     setBusy(true);
     setError(null);
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
+    // Same message whether or not the account exists (no account enumeration).
+    await supabase.auth
+      .resetPasswordForEmail(addr, { redirectTo: `${window.location.origin}/reset-password` })
+      .catch(() => undefined);
     setBusy(false);
     setResetSent(true);
   }
