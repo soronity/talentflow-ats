@@ -93,7 +93,7 @@ function JobsPage() {
                   Delete
                 </Button>
               </div>
-              <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{j.description}</p>
+              <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">{j.description}</p>
               <Link to="/board" search={{ job: j.id }} className="mt-3 inline-block text-sm text-accent underline">
                 {(j.candidates as { count: number }[])[0]?.count ?? 0} candidates → board
               </Link>
