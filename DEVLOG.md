@@ -52,3 +52,38 @@ Implementation was fast; verification is the slower, separate step. Code-based a
 - Verify public reviewer access to app and repo.
 - Prepare the five-minute demo and the assumptions email (not yet sent).
 - Optional idea, not required or started: try a Cursor + Codex workflow for comparison.
+
+---
+
+## 2026-11-09
+
+This update supersedes the 2026-11-03 status for manual QA. The 2026-11-03 entry above is kept as a historical record.
+
+### Manual checks / evidence
+
+Performed by the developer by hand against the published app. These are targeted checks, separate from the automated tests, and not full end-to-end coverage.
+
+- A reviewer admin account signed in to production successfully (credentials not recorded here).
+- Admin selected a customer workspace (BrightPlot) via "act as customer".
+- Created a job; it appeared in the Jobs list.
+- Edited a synthetic (fictional) candidate.
+- Moved a candidate between Kanban stages; the new stage persisted after a page refresh.
+- Ran the AI CV assessment; in one check the score and written rationale were saved and persisted after refresh.
+- Lovable reported 14 passing Vitest unit/component tests. Most use mocks; they are not integration evidence.
+
+### Small fix
+
+- Job cards on the Jobs page truncated descriptions with CSS `line-clamp-3`. Changed to full-text rendering with `whitespace-pre-wrap` (keeps line breaks). The developer then confirmed the full text appears in the published app.
+- Job editing is still not supported.
+
+### AI assessment observations
+
+- With identical input, repeated assessments gave varying numerical scores, sometimes by a large margin. No repeatability is guaranteed.
+- Treat scores as exploratory decision support only, not an objectively reliable hiring signal.
+
+### Remaining limitations
+
+- Cross-customer/tenant isolation (RLS) not verified with separate customer accounts.
+- Broader authorization, security and integration robustness not independently verified.
+- Not claimed to be production-ready.
+- Demo upload and assignment submission are still pending confirmation.

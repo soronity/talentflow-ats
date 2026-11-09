@@ -45,7 +45,7 @@ npm run build    # production build
 ## Verification status
 
 - **Automated tests:** 14 Vitest unit/component test cases across four files in `src/test/` were reported passing on 2026-11-03. Most use mocked clients. They do **not** establish full integration, tenant isolation/security, or production readiness.
-- **Manual end-to-end QA** and **cross-customer isolation checks** are planned, not yet passed.
-- **Published app:** the public URL exists; full production functionality has not been independently validated.
+- **Manual checks (2026-11-09, deployed app):** targeted checks confirmed admin sign-in; admin selection of a customer workspace (BrightPlot); creating a job and seeing it listed; editing a synthetic candidate; moving a candidate between Kanban stages, persisting after refresh; AI CV assessment with the saved score and summary persisting across refresh; and full job descriptions visible on the Jobs page after the 2026-11-09 display fix. These are targeted checks, **not** comprehensive end-to-end coverage.
+- **Not independently verified:** cross-customer/tenant isolation using separate customer accounts, and broader authorization, security and integration robustness. The app is **not** claimed to be production-ready.
 
 See [DEVLOG.md](./DEVLOG.md) for details.
