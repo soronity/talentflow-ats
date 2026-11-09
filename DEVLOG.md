@@ -16,8 +16,6 @@ Engineering record for reviewers and collaborators. Each entry separates what wa
 - AI assessment of pasted CV text against the job description (0–100 score plus summary) via Lovable AI Gateway.
 - Rebrand from the working name to TalentFlow; app published to a public URL; GitHub sync connected and repo made public.
 
-Rough timing: prompt-to-MVP was about 2 hours (developer estimate), within roughly 3 hours elapsed (12:45–15:45, including breaks and the unsuccessful external Supabase setup). These estimates overlap and are not exact time accounting.
-
 ### Tested / evidence
 
 - Commit `2e12ce7` ("Added duplicate prevention") adds the fixes below and the test files.
