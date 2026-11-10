@@ -9,6 +9,7 @@ A mini applicant tracking system (ATS) built for the Devotion Ventures Entrepren
 - Public app: https://talentflow-hiring-lane.lovable.app
 - Repository: https://github.com/soronity/talentflow-ats
 - Lovable editor: https://lovable.dev/projects/8c35bdbe-00be-4b6d-82c7-c6121059b31d
+- Demo video (Loom): https://www.loom.com/share/b5b2350392c2443dadc472054df040b8
 
 ## Implemented functionality
 

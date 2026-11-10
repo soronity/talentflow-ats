@@ -87,3 +87,12 @@ Performed by the developer by hand against the published app. These are targeted
 - Broader authorization, security and integration robustness not independently verified.
 - Not claimed to be production-ready.
 - Demo upload and assignment submission are still pending confirmation.
+
+---
+
+## 2026-11-10 — Submission status
+
+The TalentFlow coding-test submission email was sent to Jonas Karles on 2026-11-09 at approximately 22:58 CET, with the published app URL, public repository, Loom demo video, and reviewer-admin login details. This supersedes the Nov 9 entry's previously pending demo/submission status. No additional application functionality or independent tenant-isolation/security verification is claimed.
+
+- Demo video (Loom): https://www.loom.com/share/b5b2350392c2443dadc472054df040b8
+- Video playback was not independently verified from this environment.
